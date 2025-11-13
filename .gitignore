@@ -1,2 +1,5 @@
 /out
 /target
+
+# Ignore all resources files (likely contains puzzle inputs)
+src/main/resources/
