@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "DayXX",
+            "request": "launch",
+            "mainClass": "dayXX.DayXX",
+            "projectName": "aoc2025"
+        },
+        {
+            "type": "java",
+            "name": "Run Current Java File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "projectName": "aoc2025"
+        },
+        {
+            "type": "java",
+            "name": "Debug Current Java File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "projectName": "aoc2025"
+        }
+    ]
+}
