@@ -4,33 +4,19 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class Tools {
 
-    public static String getHash(String s) {
-        MessageDigest digest = null;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException nse) {
-            System.out.printf("No Such Algorythm %s\n", nse.getMessage());
-            System.exit(1);
-        }
-
-        byte[] hash = digest.digest(s.getBytes(StandardCharsets.UTF_8));
-        StringBuilder hexString = new StringBuilder();
-        for (int i = 0; i < hash.length; i++) {
-            final String hex = Integer.toHexString(0xff & hash[i]);
-            if (hex.length() == 1)
-                hexString.append('0');
-            hexString.append(hex);
-        }
-        return hexString.toString();
-
+    private Tools() {
+        // Prevent instantiation
     }
 
+    /**
+     * Write the given text to a file.  No error is thrown on failure, just used for debugging.
+     * 
+     * @param fileName
+     * @param text
+     */
     public static void writeFile(String fileName, String text) {
         BufferedWriter writer = null;
         try {
