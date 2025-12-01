@@ -26,7 +26,7 @@ public class DayXX {
     private static final boolean DEBUG = false;
     private static final boolean PART1 = true;
     private static final boolean PART2 = true;
-    private static final String FILENAME = "DayXX-Input.txt";
+    private static final String FILENAME = "Input.txt";
     // private static final String FILENAME = "Test1.txt";
     private static final String DISPLAY_TEXT = "The solution to part %d is %s and took %d miliseconds%n";
 
@@ -45,9 +45,9 @@ public class DayXX {
      */
     public DayXX(List<String> inputLines) {
         // Parse input here
-        inputLines.forEach(line -> {
-                System.out.println("Input Line: " + line);
-        });
+        inputLines.forEach(line -> 
+                System.out.println("Input Line: " + line)
+        );
     }
 
     /*
@@ -89,6 +89,7 @@ public class DayXX {
      * *****************************************************************************
      * Main method test harness
      */
+    
     public static void main(String[] args) throws IOException, URISyntaxException {
         String solve1 = null;
         String solve2 = null;
@@ -102,7 +103,7 @@ public class DayXX {
         // Time how long the tests take
         long startTime = System.currentTimeMillis();
         long endTimeSolve1 = startTime;
-        long endTimeSolve2 = startTime;
+        long endTimeSolve2 = 0;
         if (PART1) {
             solve1 = dayObject.solve1();
             endTimeSolve1 = System.currentTimeMillis();
@@ -115,4 +116,9 @@ public class DayXX {
             System.out.printf(DISPLAY_TEXT, 2, solve2, endTimeSolve2 - endTimeSolve1);
         }
     }
+
+       /*
+     * *****************************************************************************
+     * Extra classes and records
+     */
 }
