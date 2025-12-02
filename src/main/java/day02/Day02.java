@@ -28,8 +28,8 @@ public class Day02 {
     private static final boolean DEBUG = false;
     private static final boolean PART1 = true;
     private static final boolean PART2 = true;
-    // private static final String FILENAME = "Input.txt";
-    private static final String FILENAME = "Test1.txt";
+    private static final String FILENAME = "Input.txt";
+    // private static final String FILENAME = "Test1.txt";
     // private static final String FILENAME = "Test2.txt";
     private static final String DISPLAY_TEXT = "The solution to part %d is %s and took %d miliseconds%n";
 
@@ -102,7 +102,7 @@ public class Day02 {
             // Process each range
             for (long i = range.start; i <= range.end; i++) {
                 // Change for part 2a or 2b
-                if (!isIdValidPart2b(i)) {
+                if (!isIdValidPart2a(i)) {
                     resultsPart2 += i;
                 }
             }
