@@ -90,7 +90,7 @@ public class Day02 {
      * @return
      */
      public String solve2() {
-        // Loop through all the ranges and solve part 1
+        // Loop through all the ranges and solve part 2
         for(Range range : ranges) {
             // Process each range
             for(long i = range.start; i <= range.end; i++) {
@@ -98,7 +98,7 @@ public class Day02 {
                 String numberStr = Long.toString(i);
                 int numberStrLen = numberStr.length();
                 
-                // Loop from 1 char to half the length
+                // Loop from 1 char long to half the length long
                 boolean foundMatch = false;
                 for (int splitLen = 1; splitLen <= numberStrLen / 2 && !foundMatch; splitLen++) {
                     // If numberStrLen is not divisable by splitLen, skip
