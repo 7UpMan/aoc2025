@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Day02",
+            "request": "launch",
+            "mainClass": "day02.Day02",
+            "projectName": "aoc2025"
+        },
+        {
+            "type": "java",
             "name": "DayXX",
             "request": "launch",
             "mainClass": "dayXX.DayXX",

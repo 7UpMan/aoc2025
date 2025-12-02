@@ -38,10 +38,6 @@ public class Day01 {
     // Variables for this problem
     List<Rotation> puzzleInput = new ArrayList<>();
 
-    /*
-     * *****************************************************************************
-     * Constructor
-     */
 
     /**
      * Constructor. Read the input file and parse it into useful data

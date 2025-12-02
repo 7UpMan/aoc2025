@@ -34,10 +34,6 @@ public class DayXX {
 
     
 
-    /*
-     * *****************************************************************************
-     * Constructor
-     */
 
     /**
      * Constructor.  Read the input file and parse it into useful data
@@ -68,7 +64,7 @@ public class DayXX {
 
     /*
      * *****************************************************************************
-     * Solve the puzzle part 1
+     * Solve the puzzle part 2
      */
 
     /**
