@@ -1,4 +1,4 @@
-package dayXX;
+package day03;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -21,7 +21,7 @@ import java.util.Objects;
  * 
  * 
  */
-public class DayXX {
+public class Day03 {
     // Variables to run harness
     private static final boolean DEBUG = false;
     private static final boolean PART1 = true;
@@ -38,7 +38,7 @@ public class DayXX {
      * 
      * @param inputLines
      */
-    public DayXX(List<String> inputLines) {
+    public Day03(List<String> inputLines) {
         // Parse input here
         inputLines.forEach(line -> System.out.println("Input Line: " + line));
     }
@@ -84,9 +84,9 @@ public class DayXX {
 
         // Open and read the input file
         final List<String> lines = Files
-                .readAllLines(Paths.get(Objects.requireNonNull(DayXX.class.getResource(FILENAME)).toURI()));
+                .readAllLines(Paths.get(Objects.requireNonNull(Day03.class.getResource(FILENAME)).toURI()));
 
-        DayXX dayObject = new DayXX(lines);
+        Day03 dayObject = new Day03(lines);
 
         // Time how long the tests take
         long startTime = System.currentTimeMillis();

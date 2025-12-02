@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * To solve https://adventofcode.com/2025/day/XX
+ * To solve https://adventofcode.com/2025/day/1
  * Solutions:
- * 
+ * https://www.reddit.com/r/adventofcode/comments/1pb3y8p/2025_day_1_solutions/
  * 
  * 
  * 
