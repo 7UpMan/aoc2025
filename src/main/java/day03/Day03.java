@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * To solve https://adventofcode.com/2025/day/XX
  * Solutions:
- * 
+ * https://www.reddit.com/r/adventofcode/comments/1pcvaj4/2025_day_3_solutions/
  * 
  * 
  * 
