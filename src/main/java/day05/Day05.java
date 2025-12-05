@@ -73,7 +73,7 @@ public class Day05 {
         for (long product : products) {
             boolean isFresh = false;
             for (Range range : ranges) {
-                if (product >= range.start() && product <= range.end()) {
+                if (range.containsProduct(product)) {
                     if (DEBUG) {
                         System.out.printf("Product %d is in range %d-%d%n", product, range.start(), range.end());
                     }
@@ -96,30 +96,19 @@ public class Day05 {
      */
     public String solve2() {
 
-        
-        boolean rangeCountChanged = true;
-        List<Range> mergedRanges = ranges;
+        // Sort the array based on start number
+        ranges.sort(null);
 
-        while(rangeCountChanged) {
-            int beforeCount = mergedRanges.size();
-            mergedRanges = mergeRanges(mergedRanges);
-            int afterCount = mergedRanges.size();
-            rangeCountChanged = beforeCount != afterCount;
-        }
+        List<Range> mergedRanges = mergeRanges(ranges);
 
         if (DEBUG) {
+            System.out.printf("Merged from %d to %d ranges%n", ranges.size(), mergedRanges.size());
             System.out.println("Merged ranges:");
-            for (Range range : mergedRanges) {
-                System.out.printf("  %d-%d%n", range.start(), range.end());
-            }
+            mergedRanges.forEach(range -> System.out.printf("  %d-%d%n", range.start(), range.end()));
         }
 
-        // Calculate the result
-        long rangeTotal = 0;
-        for (Range range : mergedRanges) {
-            rangeTotal += (range.end() - range.start() + 1);
-        }
-        
+        // Calculate the result and return
+        long rangeTotal = mergedRanges.stream().mapToLong(Range::getRangeSize).sum();
 
         return Long.toString(rangeTotal);
     }
@@ -130,58 +119,34 @@ public class Day05 {
      */
 
     /**
-     * Merges overlapping ranges from the input list, reutrning a new list of merged ranges.
-     * This process may need to be repeated until no more merges are possible.
+     * Merges a list of ranges into the minimum number of ranges. If two ranges
+     * touch each other or overlap, they are merged into one. The data is sorted by
+     * start value before merging. So we never need to move the start, only extend
+     * the end.
      * 
      * @param inputRanges
-     * @return list of merged ranges
+     * @return
      */
-    public List<Range> mergeRanges(List<Range> inputRanges) {
+    private List<Range> mergeRanges(List<Range> inputRanges) {
         List<Range> mergedRanges = new ArrayList<>();
+
+        // Prime the loop otherwise we the the range 0-0.
+        Range newRange = inputRanges.get(0);
 
         // Go through the input ranges
         for (Range current : inputRanges) {
 
-            boolean merged = false;
-
-            // No check against existing merged ranges and update or create if not there
-            for (int rangeIndex = 0; rangeIndex < mergedRanges.size(); rangeIndex++) {
-                Range mergedRange = mergedRanges.get(rangeIndex);
-
-                // Check for overlaps
-
-                // Do we move the start forward
-                if (current.start() < mergedRange.start() && current.end() >= mergedRange.start()
-                        && current.end() <= mergedRange.end()) {
-                    // Move start back
-                    mergedRanges.set(rangeIndex, new Range(current.start(), mergedRange.end()));
-                    merged = true;
-                }
-                // Do we move the end back
-                else if (current.start() >= mergedRange.start() && current.start() <= mergedRange.end()
-                        && current.end() > mergedRange.end()) {
-                    // Move end back
-                    mergedRanges.set(rangeIndex, new Range(mergedRange.start(), current.end()));
-                    merged = true;
-                }
-                // Does current completely cover merged
-                else if (current.start() <= mergedRange.start() && current.end() >= mergedRange.end()) {
-                    mergedRanges.set(rangeIndex, new Range(current.start(), current.end()));
-                    merged = true;
-                }
-                // Is current completely inside merged
-                else if (current.start() >= mergedRange.start() && current.end() <= mergedRange.end()) {
-                    // Do nothing
-                    merged = true;
-                }
-            }
-
-            // If we have not merged then add current as new range
-            if (!merged) {
-                mergedRanges.add(current);
+            // Can we extent the newRange or should we write it and create a new one?
+            if (current.start() <= newRange.end() + 1) {
+                // Extend the new range
+                newRange = new Range(newRange.start(), Math.max(newRange.end(), current.end()));
+            } else {
+                // Save the old range and start a new one
+                mergedRanges.add(newRange);
+                newRange = current;
             }
         }
-
+        mergedRanges.add(newRange);
         return mergedRanges;
     }
 
@@ -225,6 +190,26 @@ public class Day05 {
      * Extra classes and records
      */
 
-    private record Range(long start, long end) {
+    private record Range(long start, long end) implements Comparable<Range> {
+        @Override
+        public int compareTo(Range other) {
+            if (this.start == other.start) {
+                return Long.compare(this.end, other.end);
+            }
+            return Long.compare(this.start, other.start);
+        }
+
+        /**
+         * Get the size of the range (inclusive)
+         * 
+         * @return
+         */
+        public long getRangeSize() {
+            return end - start + 1;
+        }
+
+        public boolean containsProduct(long product) {
+            return product >= start && product <= end;
+        }
     }
 }
