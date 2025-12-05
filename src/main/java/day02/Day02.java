@@ -37,7 +37,6 @@ public class Day02 {
     private List<Range> ranges = new ArrayList<>();
     private long resultsPart1 = 0;
     private long resultsPart2 = 0;
-    private long largestIdNumber = 0;
 
     /**
      * Constructor. Read the input file and parse it into useful data
@@ -50,9 +49,6 @@ public class Day02 {
             String[] nums = part.split("-");
             ranges.add(new Range(Long.parseLong(nums[0]), Long.parseLong(nums[1])));
         }));
-
-        // Work out the largest id
-        largestIdNumber = ranges.stream().mapToLong(r -> r.end).max().orElse(0);
 
     }
 
