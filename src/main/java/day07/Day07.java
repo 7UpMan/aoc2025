@@ -1,4 +1,4 @@
-package dayXX;
+package day07;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * To solve https://adventofcode.com/2025/day/XX
  * Solutions:
- * 
+ * https://www.reddit.com/r/adventofcode/comments/1pg9w66/2025_day_7_solutions/
  * 
  * 
  * 
@@ -21,7 +21,7 @@ import java.util.Objects;
  * 
  * 
  */
-public class DayXX {
+public class Day07 {
     // Variables to run harness
     private static final boolean DEBUG = false;
     private static final boolean PART1 = true;
@@ -38,7 +38,7 @@ public class DayXX {
      * 
      * @param inputLines
      */
-    public DayXX(List<String> inputLines) {
+    public Day07(List<String> inputLines) {
         // Parse input here
         inputLines.forEach(line -> System.out.println("Input Line: " + line));
     }
@@ -84,9 +84,9 @@ public class DayXX {
 
         // Open and read the input file
         final List<String> lines = Files
-                .readAllLines(Paths.get(Objects.requireNonNull(DayXX.class.getResource(FILENAME)).toURI()));
+                .readAllLines(Paths.get(Objects.requireNonNull(Day07.class.getResource(FILENAME)).toURI()));
 
-        DayXX dayObject = new DayXX(lines);
+        Day07 dayObject = new Day07(lines);
 
         // Time how long the tests take
         long startTime = System.currentTimeMillis();
