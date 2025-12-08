@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,8 +18,8 @@ import java.util.Objects;
  * 
  * @author mat
  * 
- *         Part 1: X
- *         Part 2: X
+ *         Part 1: 1516
+ *         Part 2: 1393669447690
  * 
  * 
  */
@@ -31,6 +33,9 @@ public class Day07 {
     private static final String DISPLAY_TEXT = "The solution to part %d is %s and took %d miliseconds%n";
 
     // Variables for this problem
+    private ArrayList<String> inputData = new ArrayList<>();
+    private long[] beamLocations;
+    private int splitCount = 0;
 
     /**
      * *****************************************************************************
@@ -40,7 +45,7 @@ public class Day07 {
      */
     public Day07(List<String> inputLines) {
         // Parse input here
-        inputLines.forEach(line -> System.out.println("Input Line: " + line));
+        inputLines.forEach(line -> inputData.add(line));
     }
 
     /**
@@ -50,8 +55,11 @@ public class Day07 {
      * @return solution to part 1
      */
     public String solve1() {
-        // Implement solution for part 1 here
-        return "solve1";
+
+        // Process the input data
+        parseInputLines();
+
+        return Integer.toString(splitCount);
     }
 
     /**
@@ -61,14 +69,57 @@ public class Day07 {
      * @return
      */
     public String solve2() {
-        // Implement solution for part 2 here
-        return "solve2";
+
+        return Long.toString(Arrays.stream(beamLocations).sum());
+
     }
 
     /*
      * *****************************************************************************
      * Other methods
      */
+
+    /**
+     * Parse the input lines into useful data structures.
+     * We have an array of beamLocations, each element is the number of beams at
+     * that location.
+     * 
+     * We process each row, looking for splitters (^). If we find one and there is a
+     * beam there, we split it to the left and right, and set the current location
+     * to 0.
+     * 
+     * If 2 beams came in, we add 2 to the left and 2 to the right.
+     * 
+     * Each time we split a beam, we increment the splitCount.
+     * 
+     * The total number of beams at the end is the sum of the beamLocations array.
+     */
+    private void parseInputLines() {
+        int rowWidth = inputData.get(0).length();
+        beamLocations = new long[rowWidth];
+        beamLocations[inputData.get(0).indexOf('S')] = 1;
+
+        // Process every row after the first 1
+        for (int rowNumber = 1; rowNumber < inputData.size(); rowNumber++) {
+            String row = inputData.get(rowNumber);
+
+            // Read each column and process
+            for (int colNumber = 0; colNumber < rowWidth; colNumber++) {
+
+                // Is there a splitter here?
+                if (row.charAt(colNumber) == '^') {
+                    // Founcd a splitter, do we have a beam to split?
+                    if (beamLocations[colNumber] > 0) {
+                        splitCount++;
+                        // Split the beam
+                        beamLocations[colNumber - 1] += beamLocations[colNumber];
+                        beamLocations[colNumber + 1] += beamLocations[colNumber];
+                        beamLocations[colNumber] = 0;
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * *****************************************************************************

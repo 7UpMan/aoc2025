@@ -36,7 +36,7 @@ public class Day06 {
     // Variables for this problem
     List<List<Long>> numberLines = new ArrayList<>();
     List<char[]> numberLinesArray = new ArrayList<>();
-    List<String> functionLine = new ArrayList<>();
+    List<Operation> operationsLine = new ArrayList<>();
 
     /**
      * *****************************************************************************
@@ -56,7 +56,15 @@ public class Day06 {
 
             numberLinesArray.add(inputLines.get(lineNum).toCharArray());
         }
-        functionLine = Arrays.asList(cleanSpaces(inputLines.get(inputLines.size() - 1)).split(" "));
+
+        // Process the operations line
+        for (String s : cleanSpaces(inputLines.get(inputLines.size() - 1)).split(" ")) {
+            if (s.equals("+")) {
+                operationsLine.add(Operation.ADD);
+            } else {
+                operationsLine.add(Operation.MULTIPLY);
+            }
+        }
 
     }
 
@@ -64,31 +72,35 @@ public class Day06 {
      * *****************************************************************************
      * Solve part 1 of the puzzle
      * 
+     * We have split the input line into a number of "problems". The "problem"
+     * on line 1 is part of the same "problem" on line 2, etc.
+     * 
      * @return solution to part 1
      */
     public String solve1() {
         ArrayList<Long> results = new ArrayList<>();
-        for (int col = 0; col < functionLine.size(); col++) {
-            // Start off with the first number in the column
-            long colResult = numberLines.get(0).get(col);
 
+        for (int problemNumber = 0; problemNumber < operationsLine.size(); problemNumber++) {
+            // Use the problems in row(0) to initialize the column result
+            long colResult = numberLines.get(0).get(problemNumber);
+
+            // Process the problems in row(1)+
             for (int row = 1; row < numberLines.size(); row++) {
-                long cell = numberLines.get(row).get(col);
-                switch (functionLine.get(col)) {
-                    case "+":
-                        colResult += cell;
-                        break;
-                    case "*":
-                        colResult *= cell;
-                        break;
-                    default:
-                        System.out.printf("Unknown function %s at column %d%n", functionLine.get(col), col);
+                long cell = numberLines.get(row).get(problemNumber);
+                if (operationsLine.get(problemNumber) == Operation.ADD) {
+                    colResult += cell;
+                } else {
+                    colResult *= cell;
                 }
             }
+
+            // We have solved one problem, so store the result
             results.add(colResult);
         }
 
+        // Sum all the problem results to get the final result
         long finalResult = results.stream().reduce(0L, Long::sum);
+
         return Long.toString(finalResult);
     }
 
@@ -96,9 +108,9 @@ public class Day06 {
      * *****************************************************************************
      * Solve part 2 of the puzzle
      * 
-     * We consider the input to be a series of "problems".  We store the answer to
+     * We consider the input to be a series of "problems". We store the answer to
      * each "problem" in an ArrayList for processing when we are done.
-     * Each column is it processed to build a number.  Then apply that number to the 
+     * Each column is it processed to build a number. Then apply that number to the
      * problem total.
      * 
      * @return
@@ -113,13 +125,15 @@ public class Day06 {
         boolean isFunctionAdd = true;
         boolean newProblem = true;
 
+        // Walk down the input lines, one character at a time
         for (int col = 0; col < columnWidth; col++) {
+            // Assume this is a column break until we find a number
             boolean columnBreak = true;
 
             // If we have a new problem, initialize everything
             if (newProblem) {
                 problemTotal = 0;
-                isFunctionAdd = functionLine.get(problemNumber).equals("+");
+                isFunctionAdd = operationsLine.get(problemNumber) == Operation.ADD;
                 newProblem = false;
                 if (!isFunctionAdd) {
                     problemTotal = 1; // Initialize for multiplication
@@ -128,36 +142,37 @@ public class Day06 {
 
             // Process this column into a number
             int columnTotal = 0;
-            for (int row = 0; row < workingRows; row++) {
-                char cell = numberLinesArray.get(row)[col];
+            for (int inputLineNumber = 0; inputLineNumber < workingRows; inputLineNumber++) {
+                char cell = numberLinesArray.get(inputLineNumber)[col];
                 if (cell == ' ') {
                     // Do nothing
                 } else {
+                    // Cannot be a column break if we find a number
                     columnBreak = false;
+                    // Build the column number
                     columnTotal = columnTotal * 10 + Character.getNumericValue(cell);
                 }
             }
 
-            // IF this is a column break, store the problem total and move to next problem
+            // If this is a column break, store the problem total and move to next problem
             if (columnBreak) {
-                // Move to next problem number
                 columnResults.add(problemTotal);
                 problemNumber++;
                 newProblem = true;
                 continue;
             }
 
-            if (DEBUG) {
-                System.out.printf("Column %d total is %d, Problem %d total is %d, function %s%n", col, columnTotal,
-                        problemNumber, problemTotal, functionLine.get(problemNumber));
-            }
-
-            // Still in the problem, so apply this column total to the problem total
+            // Apply this column toatal to the problem total.
             if (isFunctionAdd) {
                 problemTotal += columnTotal;
             } else {
                 // Must be *
                 problemTotal *= columnTotal;
+            }
+
+            if (DEBUG) {
+                System.out.printf("Column %d total is %d, Problem %d total is %d, function %s%n", col, columnTotal,
+                        problemNumber, problemTotal, operationsLine.get(problemNumber));
             }
         }
         // Add on the last problem total because there is no column break at the end
@@ -165,7 +180,7 @@ public class Day06 {
 
         // Calculate and return the result
         long finalResult = columnResults.stream().reduce(0L, Long::sum);
-        
+
         return Long.toString(finalResult);
     }
 
@@ -217,4 +232,8 @@ public class Day06 {
      * *****************************************************************************
      * Extra classes and records
      */
+    public enum Operation {
+        ADD, MULTIPLY
+    }
+
 }
